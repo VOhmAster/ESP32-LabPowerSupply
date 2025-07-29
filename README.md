@@ -26,9 +26,3 @@ DIY ESP32-based laboratory power supply with TFT display, rotary encoder, and OT
 3. **Modify pin assignments in `User_Setup.h`** in the TFT_eSPI library folder to match your hardware configuration.
 4. Set up your `User_Setup.h` for TFT.
 5. Upload `LabPowerSupply.ino` to ESP32.
-
-## 📷 Images
-*(Add any schematic or UI mockups here)*
-
-## 📜 License
-MIT License
