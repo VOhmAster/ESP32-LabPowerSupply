@@ -26,3 +26,33 @@ DIY ESP32-based laboratory power supply with TFT display, rotary encoder, and OT
 3. **Modify pin assignments in `User_Setup.h`** in the TFT_eSPI library folder to match your hardware configuration.
 4. Set up your `User_Setup.h` for TFT.
 5. Upload `LabPowerSupply.ino` to ESP32.
+
+## 📌 Recommended Pinout
+
+Here is the recommended pin configuration for the ESP32 Lab Power Supply project. Please adjust the `User_Setup.h` file accordingly.
+
+| Pin     | Function          | Description                          |
+|---------|-------------------|--------------------------------------|
+| GPIO 5  | Motor M1_IN1      | Motor driver input 1 for channel 1   |
+| GPIO 19 | Motor M1_IN2      | Motor driver input 1 for channel 2   |
+| GPIO 27 | Motor M1_IN3      | Motor driver input 1 for channel 3   |
+| GPIO 33 | Motor M1_IN4      | Motor driver input 1 for channel 4   |
+| GPIO 32 | Motor M2_IN1      | Motor driver input 2 for channel 1   |
+| GPIO 25 | Motor M2_IN2      | Motor driver input 2 for channel 2   |
+| GPIO 26 | Motor M2_IN3      | Motor driver input 2 for channel 3   |
+| GPIO 14 | Motor M2_IN4      | Motor driver input 2 for channel 4   |
+| GPIO 12 | Display LED       | TFT display LED pin                  |
+| GPIO 15 | Display CS        | TFT display chip select              |
+| GPIO 2  | Display DC        | TFT display data/command             |
+| GPIO 4  | Display RST       | TFT display reset                    |
+| GPIO 18 | Display CLK       | TFT display clock (SPI SCK)          |
+| GPIO 23 | Display MOSI      | TFT display data line (SPI MOSI)     |
+| GPIO 34 | Rotary Encoder A  | Rotary encoder signal A              |
+| GPIO 35 | Rotary Encoder B  | Rotary encoder signal B              |
+| GPIO 21 | INA219 SDA        | INA219 sensor data line (I2C)        |
+| GPIO 22 | INA219 SCL        | INA219 sensor clock line (I2C)       |
+
+
+> **Note:**  
+> - This pinout is for the specific configuration used in this project.  
+> - Modify the pins in the `User_Setup.h` file to fit your hardware setup.
