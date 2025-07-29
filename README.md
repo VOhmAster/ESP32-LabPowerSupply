@@ -2,7 +2,7 @@
 
 DIY ESP32-based laboratory power supply with TFT display, rotary encoder, and OTA update.
 
-## ✨ Features
+##  Features
 - Dual output (voltage and current control)
 - TFT display (TFT_eSPI library)
 - Rotary encoder control
@@ -10,14 +10,18 @@ DIY ESP32-based laboratory power supply with TFT display, rotary encoder, and OT
 - Presets (3.3V, 5V, 7V) and customizable modes
 - INA219 current measurement
 
-## 🛠 Hardware
+##  Hardware
 - ESP32 DevKit
-- ILI9488 TFT display
-- INA219 current sensor
+- ILI9488 TFT display (3.5")
+- SM-28BYJ-48-5V stepper motor x 2
+- SM-ULN2003 stepper driver x 2
+- INA219 current sensor x 2
 - Rotary encoder
-- MOSFET or motorized potentiometer for control
+- LM2596S-PSUM module x 2
+- SCT2650-STP-DWN module
+- 40 x 40 12V fan
 
-## 📂 Setup
+##  Setup
 1. Install **ESP32 core** in Arduino IDE.
 2. Install required libraries:
    - **TFT_eSPI** (for display)
@@ -27,7 +31,7 @@ DIY ESP32-based laboratory power supply with TFT display, rotary encoder, and OT
 4. Set up your `User_Setup.h` for TFT.
 5. Upload `LabPowerSupply.ino` to ESP32.
 
-## 📌 Recommended Pinout
+##  Recommended Pinout
 
 Here is the recommended pin configuration for the ESP32 Lab Power Supply project. Please adjust the `User_Setup.h` file accordingly.
 
