@@ -43,9 +43,6 @@ uint16_t Out2Watt;
 uint16_t PsetI;
 uint16_t PsetA;
 
-//int OV1 = 0;
-//int OV2 = 0;
-
 TFT_eSPI tft = TFT_eSPI();
 
 #define CLK 34
@@ -128,7 +125,7 @@ void setup() {
   tft.init();
   tft.setRotation(1);
 
-  // ⚠️ OUTPUT warning
+  // OUTPUT warning
   tft.fillScreen(BGcolor);
   tft.setCursor(10, 30);
   tft.setFreeFont(FF21);
@@ -230,12 +227,9 @@ PsetA= tft.color565(217, 23, 9);
 #define StandardFont &FreeMonoBold18pt7b
 #define measText &FreeMonoBold12pt7b
 
-
-
   tft.fillScreen(BGcolor);
- 
-
- // Menu structure setup
+  
+  // Menu structure setup
 
   tft.setCursor(xs1pos, 10);   
   tft.setFreeFont(FM9);  
@@ -463,8 +457,6 @@ void exitLongPressMode() {
   encoder.attachSingleEdge(DT, CLK);
   encoder.setCount(LastEncoderCount);   
   // Exited long press mode
-   Serial.println(LastEncoderCount);
-   
   // Redraw preset bar with inactive color
   tft.setCursor(PrXpos + 5, PrYpos + 35);   
   tft.setFreeFont(FSS9);  
@@ -1053,8 +1045,8 @@ void drawWatt() {
    
     tft.setCursor(xs1pos+80, PLine);
     tft.setFreeFont(StandardFont);
-    tft.setTextColor(BGcolor, BGcolor); // Törlés
-    tft.print(String(oldWatt1, 2)); // Törlés régi érték
+    tft.setTextColor(BGcolor, BGcolor); 
+    tft.print(String(oldWatt1, 2)); 
     tft.setFreeFont(measText);
     tft.print(" W");
 
@@ -1064,7 +1056,7 @@ void drawWatt() {
     tft.print("P1: ");
     tft.setCursor(xs1pos+80, PLine);
     tft.setTextColor(Out1Watt, BGcolor);
-    tft.print(bufferSet); // Új érték
+    tft.print(bufferSet); 
     tft.setFreeFont(measText);
     tft.print(" W");
 
@@ -1077,8 +1069,8 @@ void drawWatt() {
 
     tft.setCursor(xs2pos+80, PLine);
     tft.setFreeFont(StandardFont);
-    tft.setTextColor(BGcolor, BGcolor); // Törlés
-    tft.print(String(oldWatt2, 2)); // Törlés régi érték
+    tft.setTextColor(BGcolor, BGcolor); 
+    tft.print(String(oldWatt2, 2)); 
     tft.setFreeFont(measText);
     tft.print(" W");
 
@@ -1088,7 +1080,7 @@ void drawWatt() {
     tft.print("P2: ");
     tft.setCursor(xs2pos+80, PLine);
     tft.setTextColor(Out2Watt, BGcolor);
-    tft.print(bufferSet); // Új érték
+    tft.print(bufferSet); 
     tft.setFreeFont(measText);
     tft.print(" W");
 
