@@ -7,7 +7,7 @@ DIY ESP32-based laboratory power supply with TFT display, rotary encoder, and OT
 - TFT display (TFT_eSPI library)
 - Rotary encoder control
 - OTA firmware update
-- Presets: 3.3V, 5V, 12V
+- Presets (3.3V, 5V, 7V) and customizable modes
 - INA219 current measurement
 
 ## 🛠 Hardware
