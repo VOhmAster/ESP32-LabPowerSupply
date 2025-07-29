@@ -15,8 +15,8 @@
 Adafruit_INA219 ina1(0x41);  // Alapértelmezett cím
 Adafruit_INA219 ina2(0x40);  // Második modul más címen
 
-const char* ssid = "Németh";
-const char* password = "HalaszAniko.1975";
+const char* ssid = "Your SSID";
+const char* password = "Your PASSWORD";
 
 // változók a gombkezeléshez
 int presetIndex = 0;
