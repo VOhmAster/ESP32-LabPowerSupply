@@ -12,26 +12,26 @@
 
 #define EEPROM_ADDR_PSET 0 
 
-Adafruit_INA219 ina1(0x41);  // Alapértelmezett cím
-Adafruit_INA219 ina2(0x40);  // Második modul más címen
+Adafruit_INA219 ina1(0x41);  // Default title
+Adafruit_INA219 ina2(0x40);  // Second module with a different title
 
 const char* ssid = "Your SSID";
 const char* password = "Your PASSWORD";
 
-// változók a gombkezeléshez
+// Variables for button handling
 int presetIndex = 0;
 bool buttonPressed = false;
 unsigned long buttonPressStartTime = 0;
 bool longPressHandled = false;
-const unsigned long longPressDuration = 500; //hosszú gombnyomás ideje
+const unsigned long longPressDuration = 500; // Long button press duration
 bool longPressMode = false;
 bool inCustomPresetMode = false;
 
-// presetek
+// presets
 float presetVoltage;
-float psetCustom = 0; //kezdőérték
+float psetCustom = 0; // Starting value
 
-//karakter szín változók definiálása
+// Define character color variables
 uint16_t BGcolor;
 uint16_t StandardColor;
 uint16_t Out1Volt;
@@ -93,7 +93,7 @@ const unsigned long measurementInterval = 500; //ms
 //float lastDisplayedValue = -1;
 int voltageState = 1;
 
-//szövegsorok pozíciója
+// Position of text lines
   int ULine = 60;
   int ILine = 130;
   int PLine = 200;
@@ -103,7 +103,7 @@ int voltageState = 1;
   int yspos = 20;
   int borderW = 220;
 
-// preset menü pozíciója
+// Position of the preset menu
 
   int PrXpos = 15;
   int PrYpos = 240;
@@ -128,7 +128,7 @@ void setup() {
   tft.init();
   tft.setRotation(1);
 
-   // ⚠️ OUTPUT figyelmeztetés
+  // ⚠️ OUTPUT warning
   tft.fillScreen(BGcolor);
   tft.setCursor(10, 30);
   tft.setFreeFont(FF21);
@@ -145,10 +145,10 @@ void setup() {
   WiFi.begin(ssid, password);
   delay(500);
 
-  unsigned long startAttemptTime = millis();  // Kezdeti időpont
+  unsigned long startAttemptTime = millis();  
 
 int XDot = 10;
-while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 10000) { // 10 másodperc
+while (WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < 10000) { 
   delay(500);
   Serial.print(".");
   tft.setCursor(XDot, 140);
@@ -161,7 +161,7 @@ if (WiFi.status() == WL_CONNECTED) {
   tft.setCursor(10, 170);
   tft.print("WiFi connected!");
   delay(2000);
-  setupOTA();  // Csak ha sikerült csatlakozni
+  setupOTA();  
 } else {
   
   tft.setCursor(10, 170);
@@ -175,14 +175,14 @@ if (WiFi.status() == WL_CONNECTED) {
 if (!ina1.begin()) {
   
   tft.setCursor(10, 240);
-  tft.setTextColor(TFT_RED);  // Hibák pirossal
+  tft.setTextColor(TFT_RED); 
   tft.print("INA219 #1 not detected!");
   delay(2000);
   while (1);
 } else {
   
   tft.setCursor(10, 240);
-  tft.setTextColor(TFT_GREEN);  // OK zölddel
+  tft.setTextColor(TFT_GREEN); 
   tft.print("INA219 #1 detected.");
   delay(2000);
 }
@@ -211,7 +211,7 @@ ina2.setCalibration_32V_2A();
 
   encoder.attachSingleEdge(DT, CLK);
       
-    //szín definíciók
+    // Color definitions
  
 BGcolor = tft.color565(0, 0, 0);
 StandardColor = tft.color565(232, 228, 227);
@@ -225,7 +225,8 @@ PsetI= tft.color565(171, 168, 167);
 PsetA= tft.color565(217, 23, 9);
 
 
-// font definíciók
+// Font definitions
+
 #define StandardFont &FreeMonoBold18pt7b
 #define measText &FreeMonoBold12pt7b
 
@@ -234,7 +235,7 @@ PsetA= tft.color565(217, 23, 9);
   tft.fillScreen(BGcolor);
  
 
-  //menuszerkezet felépítése
+ // Menu structure setup
 
   tft.setCursor(xs1pos, 10);   
   tft.setFreeFont(FM9);  
@@ -243,14 +244,14 @@ PsetA= tft.color565(217, 23, 9);
   tft.setCursor(xs2pos, 10);
   tft.print("CH2");
    
-  // Bal jobb keret
+  // Left and right frame
   tft.drawRect(xs1pos, yspos, borderW, 200, TFT_GREEN);
   tft.drawRect(xs2pos, yspos, borderW, 200, TFT_WHITE);
 
-  // preset menu keret
+ // Preset menu frame
    tft.drawRect(PrXpos, PrYpos, 460, 60, TFT_WHITE);
 
-  // preset szövegek
+ // Preset texts
   tft.setCursor(PrXpos + 5, PrYpos +35);   
   tft.setFreeFont(FSS9);  
   tft.setTextColor(PsetI, BGcolor);  
@@ -276,7 +277,7 @@ drawVoltage(value_U1);
 voltageState = 2;
 while (abs(ina2.getBusVoltage_V() - globalOutV2) > 0.05) {
   regulateOutputVoltageCH2();
-  delay(2); // biztosítja a stepInterval-t
+  delay(2); 
 }
 drawVoltage(value_U2);
 
@@ -297,7 +298,7 @@ void setupOTA() {
   static std::string Oldpercent = "";
 
   ArduinoOTA.onStart([]() {
-    tft.fillScreen(BGcolor); // Teljes képernyő törlése
+    tft.fillScreen(BGcolor); 
     tft.setFreeFont(FF21);
     tft.setTextColor(StandardColor, BGcolor);
     tft.setCursor(10, 30);
@@ -359,17 +360,17 @@ void loop() {
 
  
 
-    // Csak normál módban kezeljük az encodert és a rövid nyomást
+    // Only handle the encoder and short press in normal mode
   if (!longPressMode) {
 
-    // Aktív feszültségváltozó kiválasztása (referenciával)
+    // Select active voltage variable (with reference)
     float& activeValue = (voltageState == 1) ? value_U1 : value_U2;
 
-    // Enkóder nyers érték lekérése (lépésszámként értelmezzük)
+   // Get raw encoder value (interpreted as step count)
     int encSteps = encoder.getCount();
     float newValue = encSteps * step;
 
-    // Határok kezelése
+    // Handle boundaries
     if (newValue < minValue) {
         newValue = minValue;
         encoder.setCount((int)(minValue / step));
@@ -386,7 +387,7 @@ void loop() {
   if (currentMillis - lastEncoderCheck >= encoderInterval) {
     lastEncoderCheck = currentMillis;
 
-    // Gombkezelés minden módban aktív
+    
     int buttonState = digitalRead(SW);
 
     if (buttonState == LOW) {
@@ -397,10 +398,8 @@ void loop() {
       } else {
         if (!longPressHandled && (currentMillis - buttonPressStartTime >= longPressDuration)) {
           longPressHandled = true;
-          longPressMode = !longPressMode;  // Átváltás vagy visszaváltás
+          longPressMode = !longPressMode; 
           if (longPressMode) {
-
-             // Itt jön az egyszeri preset menü belépés inicializálás:
              inCustomPresetMode = false;
              presetIndex = 0;  // első preset legyen aktív
             applyPreset(presetIndex);
@@ -420,7 +419,7 @@ void loop() {
           encoder.setCount((int)(encoderValue / step));
 
       if (voltageState == 1) {
-        // Keretek színváltása az aktív csatornához
+        // Change frame colors to the active channel
         tft.drawRect(xs1pos, yspos, borderW, 200, TFT_GREEN);  // Piros keret
         tft.drawRect(xs2pos, yspos, borderW, 200, TFT_WHITE);  // Fehér keret
       } else {
@@ -438,9 +437,9 @@ void loop() {
 
   if (longPressMode) {
   if (inCustomPresetMode) {
-    handleCustomPreset(); // csak a custom menü fut, amíg aktív
+    handleCustomPreset(); 
   } else {
-    handleLongPressMode(); // preset váltás logika
+    handleLongPressMode(); 
   }
 }
 
@@ -452,8 +451,8 @@ void loop() {
 
 void enterLongPressMode() {
   
-  //Beléptünk hosszú nyomás módba
-  
+  // Entered long press mode
+ 
   tft.drawRect(PrXpos, PrYpos, 460, 60, TFT_GREEN);
   presetIndex = 0;
   applyPreset(presetIndex);
@@ -462,12 +461,11 @@ void enterLongPressMode() {
 
 void exitLongPressMode() {
   encoder.attachSingleEdge(DT, CLK);
-   // A feszültség értékének beállítása a megfelelő csatornára
   encoder.setCount(LastEncoderCount);   
-   //Kiléptünk hosszú nyomás módból
+  // Exited long press mode
    Serial.println(LastEncoderCount);
    
-    // Preset sáv inaktív színnel újrarajzolása
+  // Redraw preset bar with inactive color
   tft.setCursor(PrXpos + 5, PrYpos + 35);   
   tft.setFreeFont(FSS9);  
 
@@ -502,14 +500,10 @@ void exitLongPressMode() {
 void handleLongPressMode() {
   
   if (inCustomPresetMode) {
-    // Ha a custom menü aktív, csak az encoderes kezelés fusson
-    
     handleCustomPreset();
-    return;  // kilépünk innen, nem nézünk gombot, nem váltunk presetet
+    return;  
   }
 
-  // Ha nem vagyunk custom módban, akkor figyeljük a gombot preset váltáshoz
- 
   int buttonState = digitalRead(SW);
   encoder.detach(); // encoder lekapcolása
   if (buttonState == LOW) {
@@ -568,7 +562,7 @@ void drawPresetMenu(int activeIndex) {
 }
 
 void applyPreset(int index) {
-       encoder.detach(); // encoder lekapcsolása
+       encoder.detach(); 
   switch (index) {
     case 0:
       presetVoltage = 3.3;
@@ -586,21 +580,17 @@ void applyPreset(int index) {
       
       presetVoltage = psetCustom; 
       LastEncoderCount = psetCustom * 10;
-      break;  // Ha nincs érvényes index, kilép
+      break;  
   }
 
-  // A feszültség értékének beállítása a megfelelő csatornára
+ // Set the voltage value to the corresponding channel
   if (voltageState == 1) {
     globalOutV1 = presetVoltage;
   } else {
     globalOutV2 = presetVoltage;
   }
-
-  // A feszültség értékének kirajzolása
   drawVoltage(presetVoltage);
 }
-
-
 
 void handleCustomPreset() {
   encoder.attachSingleEdge(DT, CLK);
@@ -608,11 +598,10 @@ void handleCustomPreset() {
   static bool initialized = false;
   static std::string OldpsetCustom = "";
 
-  // Egyszeri inicializálás belépéskor
- if (!initialized) {
+  if (!initialized) {
   initialized = true;
 
-  // EEPROM-ból visszatöltött psetCustom már be van állítva korábban
+  // psetCustom retrieved from EEPROM has already been set previously
   long rawCount = (psetCustom) / 0.1;
   if (rawCount < 15) rawCount = 15;
   else if (rawCount > 200) rawCount = 200;
@@ -620,14 +609,13 @@ void handleCustomPreset() {
   encoder.setCount(rawCount); 
   lastCount = rawCount;
 
-  // Aktív csatorna
   if (voltageState == 1) {
     globalOutV1 = psetCustom;
   } else {
     globalOutV2 = psetCustom;
   }
 
-  // Kijelző
+  
   char bufferSet[20];
   sprintf(bufferSet, "%.2f V", psetCustom);
   tft.setCursor(PrXpos + 375, PrYpos + 35);   
@@ -641,8 +629,7 @@ void handleCustomPreset() {
 
   long rawCount = encoder.getCount();
 
-  // feszültség határolás
-  if (rawCount < 15) {
+   if (rawCount < 15) {
     rawCount = 15;
     encoder.setCount(15);
   } else if (rawCount > 200) {
@@ -652,19 +639,16 @@ void handleCustomPreset() {
 
   long currentCount = rawCount;
 
-  // Ha változott a beállítás
-  if (currentCount != lastCount) {
+   if (currentCount != lastCount) {
     lastCount = currentCount;
     psetCustom = 0 + currentCount * 0.1;
 
-    // Frissítjük az aktív csatornát
-    if (voltageState == 1) {
+     if (voltageState == 1) {
       globalOutV1 = psetCustom;
     } else {
       globalOutV2 = psetCustom;
     }
 
-    // Kijelzőfrissítés
     char bufferSet[20];
     sprintf(bufferSet, "%.2f V", psetCustom);
 
@@ -686,7 +670,6 @@ void handleCustomPreset() {
     
   }
 
-  // Gombnyomás kezelése
   int buttonState = digitalRead(SW);
   
   if (buttonState == LOW) {
@@ -706,7 +689,7 @@ void handleCustomPreset() {
     inCustomPresetMode = false;  
     
     presetIndex = -1;
-    applyPreset(presetIndex);  // itt -1, ami nem csinál semmit, ez OK
+    applyPreset(presetIndex);  
     initialized = false;
   }
 }
@@ -717,14 +700,14 @@ void drawMeasuredVoltage() {
   static std::string OldRealV1 = "";
   static std::string OldRealV2 = "";
 
-  float realV1 = ina1.getBusVoltage_V();  // U1
+  float realV1 = ina1.getBusVoltage_V(); // U1
   float realV2 = ina2.getBusVoltage_V(); //U2
 
   char bufferSet[20];
 
-  const float epsilon = 0.01;  // Minimális változás küszöbértéke
+  const float epsilon = 0.01;  
+// --- U1 measured ---
 
-  // --- U1 mért ---
   sprintf(bufferSet,  "%.2f V ", realV1);
   if (fabs(realV1 - atof(OldRealV1.c_str())) > epsilon) {  // Ha az eltérés nagyobb mint az epsilon
     // Törlés
@@ -733,7 +716,8 @@ void drawMeasuredVoltage() {
     tft.setTextColor(BGcolor, BGcolor);
     tft.print(OldRealV1.c_str());
 
-    // Új érték
+    // New value
+
     tft.setCursor(xs1pos+105, ULine + 30);
     tft.setFreeFont(FF21);
     tft.setTextColor(TFT_WHITE, BGcolor);  // Halvány szín
@@ -742,7 +726,8 @@ void drawMeasuredVoltage() {
     OldRealV1 = std::string(bufferSet);
   }
 
-  // --- U2 mért ---
+ // --- U2 measured ---
+  
   sprintf(bufferSet, "%.2f V ", realV2);
   if (fabs(realV2 - atof(OldRealV2.c_str())) > epsilon) {  // Ha az eltérés nagyobb mint az epsilon
     // Törlés
@@ -751,7 +736,8 @@ void drawMeasuredVoltage() {
     tft.setTextColor(BGcolor, BGcolor);
     tft.print(OldRealV2.c_str());
 
-    // Új érték
+   // New value
+    
     tft.setCursor(xs2pos+105, ULine + 30);
     tft.setFreeFont(FF21);
     tft.setTextColor(TFT_WHITE, BGcolor);
@@ -778,7 +764,8 @@ void drawVoltage(float voltage) {
       tft.setFreeFont(measText);
       tft.print(" V");
 
-      // Új érték kirajzolása
+      // Draw new value
+
       tft.setCursor(xs1pos + 6, ULine);
       tft.setFreeFont(StandardFont);
       tft.setTextColor(StandardColor, BGcolor);
@@ -802,7 +789,8 @@ void drawVoltage(float voltage) {
       tft.setFreeFont(measText);
       tft.print(" V");
 
-      // Új érték kirajzolása
+      // Draw new value
+
       tft.setCursor(xs2pos + 6, ULine);
       tft.setFreeFont(StandardFont);
       tft.setTextColor(StandardColor, BGcolor);
@@ -827,11 +815,11 @@ void regulateOutputVoltageCH1() {
   float readVoltage = ina1.getBusVoltage_V();
   float targetVoltage = globalOutV1;
 
-  // Szűrés: mozgóátlag jelleggel (0.9 súly = lassú, stabil)
+  // Filtering: moving average style (0.9 weight = slow, stable)
   voltageFiltered1 = 0.9 * voltageFiltered1 + 0.1 * readVoltage;
 
-  const float tolerance = 0.08; // kissé megnövelt hiszterézis
-  const unsigned long stepInterval = 5; // kicsit hosszabb ciklus
+  const float tolerance = 0.08; 
+  const unsigned long stepInterval = 5; 
 
   if (millis() - lastStepTime > stepInterval) {
     float diff = voltageFiltered1 - targetVoltage;
@@ -852,11 +840,11 @@ void regulateOutputVoltageCH2() {
   float readVoltage = ina2.getBusVoltage_V();
   float targetVoltage = globalOutV2;
 
-  // Szűrés: mozgóátlag jelleggel (0.9 súly = lassú, stabil)
+  // Filtering: moving average style (0.9 weight = slow, stable)
   voltageFiltered2 = 0.9 * voltageFiltered2 + 0.1 * readVoltage;
 
-  const float tolerance = 0.08; // kissé megnövelt hiszterézis
-  const unsigned long stepInterval = 5; // kicsit hosszabb ciklus
+  const float tolerance = 0.08; 
+  const unsigned long stepInterval = 5; 
 
   if (millis() - lastStepTime > stepInterval) {
     float diff = voltageFiltered2 - targetVoltage;
@@ -913,11 +901,11 @@ if (realAmper2 == 0.0) {
 
   // === I1 ===
   sprintf(bufferA, "%.2f", realAmper1);
-  sprintf(buffermA, "[ %.0f", realAmper1 * 1000);  // mA érték egész számként
+  sprintf(buffermA, "[ %.0f", realAmper1 * 1000);  
 
   if (OldAmper1 != std::string(bufferA) || OldmA1 != std::string(buffermA)) {
-    // --- Törlés ---
-    // Felső sor törlése (A)
+    // --- Delete ---
+    // Clear top line (A)
     tft.setCursor(xs1pos + 80, ILine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(BGcolor, BGcolor);
@@ -926,15 +914,15 @@ if (realAmper2 == 0.0) {
     tft.print(" A");
     
 
-    // Alsó sor törlése (mA)
-    tft.setCursor(xs1pos + 85, ILine + 25);  // lefelé 22 pixellel (állítható)
+    // Clear bottom line (mA)
+    tft.setCursor(xs1pos + 85, ILine + 25);  
     tft.setFreeFont(FF21);
     tft.setTextColor(BGcolor, BGcolor);
     tft.print(OldmA1.c_str());
     tft.print(" mA ]");
 
-    // --- Új érték ---
-    // Felső sor (A)
+    // --- New value ---
+    // Top line (A)
     tft.setCursor(xs1pos + 6, ILine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(StandardColor, BGcolor);
@@ -949,27 +937,24 @@ if (realAmper2 == 0.0) {
     char bufferMaxmA[10];
 
 if (maxAmper1_mA == 0){
- sprintf(bufferMaxmA, "    0     ");  // max mA előre "<" szimbólummal
+ sprintf(bufferMaxmA, "    0     ");  
 }else{ 
- sprintf(bufferMaxmA, "< %.0f", maxAmper1_mA); // max mA előre "<" szimbólummal
+ sprintf(bufferMaxmA, "< %.0f", maxAmper1_mA); 
 }
 
 if (OldMaxmA1 != std::string(bufferMaxmA)) {
-  tft.setCursor(xs1pos + 10, ILine + 25);  // új baloldali pozíció
+  tft.setCursor(xs1pos + 10, ILine + 25); 
   tft.setFreeFont(FF21);
-  tft.setTextColor(BGcolor, BGcolor);  // törlés
+  tft.setTextColor(BGcolor, BGcolor); 
   tft.print(OldMaxmA1.c_str());
 
-  tft.setCursor(xs1pos + 10, ILine + 25);  // új érték
+  tft.setCursor(xs1pos + 10, ILine + 25); 
   tft.setTextColor(TFT_YELLOW, BGcolor);
   tft.print(bufferMaxmA);
 
   OldMaxmA1 = std::string(bufferMaxmA);
 }
-
-
-    // Alsó sor (mA)
-    tft.setCursor(xs1pos + 85, ILine + 25);  // lefelé 22 pixel
+    tft.setCursor(xs1pos + 85, ILine + 25);  
     tft.setFreeFont(FF21);
     tft.setTextColor(TFT_WHITE, BGcolor);
     tft.print(buffermA);
@@ -984,7 +969,7 @@ if (OldMaxmA1 != std::string(bufferMaxmA)) {
   sprintf(buffermA, "[ %.0f", realAmper2 * 1000);
 
   if (OldAmper2 != std::string(bufferA) || OldmA2 != std::string(buffermA)) {
-    // Törlés
+    
     tft.setCursor(xs2pos + 80, ILine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(BGcolor, BGcolor);
@@ -998,7 +983,7 @@ if (OldMaxmA1 != std::string(bufferMaxmA)) {
     tft.print(OldmA2.c_str());
     tft.print(" mA ]");
 
-    // Új érték
+    
     tft.setCursor(xs2pos + 6, ILine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(StandardColor, BGcolor);
@@ -1013,9 +998,9 @@ if (OldMaxmA1 != std::string(bufferMaxmA)) {
     char bufferMaxmA[10];
 
 if (maxAmper2_mA == 0){
- sprintf(bufferMaxmA, "    0     ");  // max mA előre "<" szimbólummal
+ sprintf(bufferMaxmA, "    0     ");  
 }else{ 
- sprintf(bufferMaxmA, "< %.0f", maxAmper2_mA); // max mA előre "<" szimbólummal
+ sprintf(bufferMaxmA, "< %.0f", maxAmper2_mA); 
 }
 
 if (OldMaxmA2 != std::string(bufferMaxmA)) {
@@ -1046,10 +1031,10 @@ if (OldMaxmA2 != std::string(bufferMaxmA)) {
 
 
 void drawWatt() {
-  static float oldWatt1 = -1.0;  // Kezdő érték nem -9999, hanem valami ésszerű
-  static float oldWatt2 = -1.0;  // Ugyanaz itt
+  static float oldWatt1 = -1.0;  
+  static float oldWatt2 = -1.0;  
 
-  // Valódi értékek az INA szenzorokból
+  // Actual values from the INA sensors
   float realVolt1 = ina1.getBusVoltage_V();
   float realAmper1 = ina1.getCurrent_mA() / 1000.0;
   if (fabs(realAmper1) < 0.005) realAmper1 = 0.0;
@@ -1063,10 +1048,9 @@ void drawWatt() {
   char bufferSet[10];
 
   // --- P1 ---
-  if (oldWatt1 == -1.0 || fabs(realWatt1 - oldWatt1) >= 0.01) {  // Frissítés csak ha szükséges
+  if (oldWatt1 == -1.0 || fabs(realWatt1 - oldWatt1) >= 0.01) {  
     sprintf(bufferSet, "%.2f", realWatt1);
-
-    // Törlés régi érték
+   
     tft.setCursor(xs1pos+80, PLine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(BGcolor, BGcolor); // Törlés
@@ -1074,7 +1058,6 @@ void drawWatt() {
     tft.setFreeFont(measText);
     tft.print(" W");
 
-    // Új érték
     tft.setCursor(xs1pos+6, PLine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(StandardColor, BGcolor);
@@ -1085,14 +1068,13 @@ void drawWatt() {
     tft.setFreeFont(measText);
     tft.print(" W");
 
-    oldWatt1 = realWatt1; // Tároljuk az új értéket
+    oldWatt1 = realWatt1; 
   }
 
   // --- P2 ---
-  if (oldWatt2 == -1.0 || fabs(realWatt2 - oldWatt2) >= 0.01) {  // Frissítés csak ha szükséges
+  if (oldWatt2 == -1.0 || fabs(realWatt2 - oldWatt2) >= 0.01) {  
     sprintf(bufferSet, "%.2f", realWatt2);
 
-    // Törlés régi érték
     tft.setCursor(xs2pos+80, PLine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(BGcolor, BGcolor); // Törlés
@@ -1100,7 +1082,6 @@ void drawWatt() {
     tft.setFreeFont(measText);
     tft.print(" W");
 
-    // Új érték
     tft.setCursor(xs2pos+6, PLine);
     tft.setFreeFont(StandardFont);
     tft.setTextColor(StandardColor, BGcolor);
@@ -1111,7 +1092,7 @@ void drawWatt() {
     tft.setFreeFont(measText);
     tft.print(" W");
 
-    oldWatt2 = realWatt2; // Tároljuk az új értéket
+    oldWatt2 = realWatt2; 
   }
 }
 
