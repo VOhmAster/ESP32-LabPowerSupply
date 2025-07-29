@@ -1,0 +1,47 @@
+# General system files
+.DS_Store
+Thumbs.db
+
+# Build and output directories
+/build/
+/dist/
+/out/
+/tmp/
+
+# Compiled binaries
+*.bin
+*.elf
+*.hex
+*.map
+
+# Arduino / PlatformIO cache and temporary files
+.arduino/
+.arduinoIDE/
+.arduino15/
+.pio/
+.pioenvs/
+.piolibdeps/
+.piodebug/
+
+# IDE-specific files
+.vscode/
+.idea/
+*.iml
+
+# Logs and backup files
+*.log
+*.dat
+*.bak
+
+# Sensitive data
+*.secret
+*.key
+*.pem
+*.crt
+.env
+config.json
+
+# Firmware and OTA update files
+*.ino.bin
+*.ino.elf
+*.ino.map
