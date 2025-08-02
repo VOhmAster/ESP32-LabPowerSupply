@@ -702,7 +702,7 @@ void drawMeasuredVoltage() {
 
   sprintf(bufferSet,  "%.2f V ", realV1);
   if (fabs(realV1 - atof(OldRealV1.c_str())) > epsilon) {  // Ha az eltérés nagyobb mint az epsilon
-    // Törlés
+    
     tft.setCursor(xs1pos+105, ULine + 30);
     tft.setFreeFont(FF21);
     tft.setTextColor(BGcolor, BGcolor);
@@ -748,7 +748,7 @@ void drawVoltage(float voltage) {
 
   if (voltageState == 1) {
     if (OldVoltage1 != std::string(bufferSet)) {
-      // Régi érték törlése
+      
       tft.setCursor(xs1pos + 80, ULine);
       tft.setFreeFont(StandardFont);
       tft.setTextColor(BGcolor, BGcolor);
@@ -773,7 +773,7 @@ void drawVoltage(float voltage) {
     }
   } else {
     if (OldVoltage2 != std::string(bufferSet)) {
-      // Régi érték törlése
+      
       tft.setCursor(xs2pos + 80, ULine);
       tft.setFreeFont(StandardFont);
       tft.setTextColor(BGcolor, BGcolor);
@@ -873,7 +873,7 @@ float lastCurrent1 = 0;
   if (fabs(realAmper1) < 0.005) realAmper1 = 0.0;
   if (fabs(realAmper2) < 0.005) realAmper2 = 0.0;
 
-  // Frissítés max értékre
+  // Refress max mA
 float current1_mA = realAmper1 * 1000;
 if (current1_mA > maxAmper1_mA) maxAmper1_mA = current1_mA;
 
@@ -996,12 +996,12 @@ if (maxAmper2_mA == 0){
 }
 
 if (OldMaxmA2 != std::string(bufferMaxmA)) {
-  tft.setCursor(xs2pos + 10, ILine + 25);  // új baloldali pozíció
+  tft.setCursor(xs2pos + 10, ILine + 25);  
   tft.setFreeFont(FF21);
-  tft.setTextColor(BGcolor, BGcolor);  // törlés
+  tft.setTextColor(BGcolor, BGcolor);  
   tft.print(OldMaxmA2.c_str());
 
-  tft.setCursor(xs2pos + 10, ILine + 25);  // új érték
+  tft.setCursor(xs2pos + 10, ILine + 25);  
   tft.setTextColor(TFT_YELLOW, BGcolor);
   tft.print(bufferMaxmA);
 
