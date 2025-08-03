@@ -61,11 +61,30 @@ Here is the recommended pin configuration for the ESP32 Lab Power Supply project
 > - This pinout is for the specific configuration used in this project.  
 > - Modify the pins in the `User_Setup.h` file to fit your hardware setup.
 
+### Hybrid Control System with Closed-Loop Feedback
+
+This power supply uses a hybrid approach that combines **digital control** and **analog signal measurement**.  
+The output voltage and current are continuously monitored through analog readings, while adjustments are performed digitally, resulting in more accurate control compared to systems that rely solely on digital signals.
+
+The system operates with a **closed-loop feedback mechanism**, meaning it always uses the actual measured output values as the basis for regulation.  
+This ensures stable and precise voltage and current control under varying load conditions.
+
+### Open-Loop vs Closed-Loop Control
+
+**Open-Loop (Without Feedback):**
+Input Setpoint → [ Controller ] → Output  
+(No real-time correction based on actual output)
+
+**Closed-Loop (With Feedback):**
+Input Setpoint → [ Controller ] → Output → [ Measurement ] → Feedback → [ Controller ]  
+(The system continuously adjusts based on the actual measured values)
+
 ### Optional Bleeder Resistor for Smoother Voltage Adjustment
 
 For more stable voltage adjustments, especially when fine-tuning the output voltage, it may be useful to add a bleeder resistor to the power supply circuit. This is optional and depends on your specific needs.
 
 **Recommended Value:**
 - **1 kΩ / 0.6 W** metal film resistor
+
 
 
