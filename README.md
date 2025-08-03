@@ -60,3 +60,12 @@ Here is the recommended pin configuration for the ESP32 Lab Power Supply project
 > **Note:**  
 > - This pinout is for the specific configuration used in this project.  
 > - Modify the pins in the `User_Setup.h` file to fit your hardware setup.
+
+### Optional Bleeder Resistor for Smoother Voltage Adjustment
+
+For more stable voltage adjustments, especially when fine-tuning the output voltage, it may be useful to add a bleeder resistor to the power supply circuit. This is optional and depends on your specific needs.
+
+**Recommended Value:**
+- **1 kΩ / 0.6 W** metal film resistor
+
+
