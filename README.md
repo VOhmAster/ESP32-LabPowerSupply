@@ -86,5 +86,18 @@ For more stable voltage adjustments, especially when fine-tuning the output volt
 **Recommended Value:**
 - **1 kΩ / 0.6 W** metal film resistor
 
+## Demo
+
+**Preset Switching:**  
+![Presets](media/presets.gif)
+
+**Load Response (Closed-loop feedback):**  
+![Load response](media/response.gif)
+
+**Boot Sequence:**  
+![Boot](media/boot.gif)
+
+**OTA Firmware Update:**  
+![OTA](media/OTAupdate.gif)
 
 
