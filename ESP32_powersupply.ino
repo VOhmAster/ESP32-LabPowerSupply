@@ -15,8 +15,8 @@
 Adafruit_INA219 ina1(0x41);  // Default title
 Adafruit_INA219 ina2(0x40);  // Second module with a different title
 
-const char* ssid = "YOUR_SSID";
-const char* password = "YOUR_PASSWORD";
+const char* ssid = "YOUR SSID";
+const char* password = "YOUR PASSWORD";
 
 // Variables for button handling
 int presetIndex = 0;
@@ -206,7 +206,7 @@ ina2.setCalibration_32V_2A();
    
   pinMode(SW, INPUT_PULLUP);
 
-  encoder.attachSingleEdge(DT, CLK);
+  encoder.attachHalfQuad(DT, CLK);
       
     // Color definitions
  
@@ -275,7 +275,7 @@ while (abs(ina2.getBusVoltage_V() - globalOutV2) > 0.05) {
 }
 drawVoltage(value_U2);
 
-encoder.setCount((int)(value_U1 / step));
+encoder.setCount((int)(value_U1 / step) * 2);
 voltageState = 1;
 
     tft.setFreeFont(FF21);
@@ -361,16 +361,16 @@ void loop() {
     float& activeValue = (voltageState == 1) ? value_U1 : value_U2;
 
    // Get raw encoder value (interpreted as step count)
-    int encSteps = encoder.getCount();
+    int encSteps = encoder.getCount() / 2;
     float newValue = encSteps * step;
 
     // Handle boundaries
     if (newValue < minValue) {
         newValue = minValue;
-        encoder.setCount((int)(minValue / step));
+        encoder.setCount((int)(minValue / step) * 2);
     } else if (newValue > maxValue) {
         newValue = maxValue;
-        encoder.setCount((int)(maxValue / step));
+        encoder.setCount((int)(maxValue / step) * 2);
     }
 
     activeValue = newValue;
@@ -410,7 +410,7 @@ void loop() {
         if (!longPressHandled && !longPressMode) {
           voltageState = (voltageState == 1) ? 2 : 1;
           float encoderValue = (voltageState == 1) ? value_U1 : value_U2;
-          encoder.setCount((int)(encoderValue / step));
+          encoder.setCount((int)(encoderValue / step) * 2);
 
       if (voltageState == 1) {
         // Change frame colors to the active channel
@@ -454,8 +454,8 @@ void enterLongPressMode() {
 }
 
 void exitLongPressMode() {
-  encoder.attachSingleEdge(DT, CLK);
-  encoder.setCount(LastEncoderCount);   
+  encoder.attachHalfQuad(DT, CLK);
+  encoder.setCount(LastEncoderCount * 2);   
   // Exited long press mode
   // Redraw preset bar with inactive color
   tft.setCursor(PrXpos + 5, PrYpos + 35);   
@@ -586,7 +586,7 @@ void applyPreset(int index) {
 }
 
 void handleCustomPreset() {
-  encoder.attachSingleEdge(DT, CLK);
+  encoder.attachHalfQuad(DT, CLK);
   static long lastCount = 0;
   static bool initialized = false;
   static std::string OldpsetCustom = "";
@@ -602,7 +602,7 @@ void handleCustomPreset() {
   if (rawCount < 15) rawCount = 15; // 15 = 1.5V
   else if (rawCount > 200) rawCount = 200; // 200 = 20V
 
-  encoder.setCount(rawCount); 
+  encoder.setCount(rawCount  - 2); 
   lastCount = rawCount;
 
   if (voltageState == 1) {
@@ -624,14 +624,14 @@ void handleCustomPreset() {
 }
    //Limits of adjustment with the encoder.
 
-  long rawCount = encoder.getCount();
+  long rawCount = encoder.getCount() / 2;
 
    if (rawCount < 15) {  // 15 = 1.5V
     rawCount = 15;
-    encoder.setCount(15);
+    encoder.setCount(15 * 2);
   } else if (rawCount > 200) {  // 200 = 20V
     rawCount = 200;
-    encoder.setCount(200);
+    encoder.setCount(200  * 2);
   }
 
   long currentCount = rawCount;
@@ -1107,9 +1107,3 @@ void drawWatt() {
     oldWatt2 = realWatt2; 
   }
 }
-
-
-
-
-
-
