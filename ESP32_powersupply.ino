@@ -602,7 +602,7 @@ void handleCustomPreset() {
   if (rawCount < 15) rawCount = 15; // 15 = 1.5V
   else if (rawCount > 200) rawCount = 200; // 200 = 20V
 
-  encoder.setCount(rawCount  - 2); 
+  encoder.setCount(rawCount * 2); 
   lastCount = rawCount;
 
   if (voltageState == 1) {
@@ -819,7 +819,7 @@ void regulateOutputVoltageCH1() {
   float targetVoltage = globalOutV1;
 
   // Filtering: moving average style (0.9 weight = slow, stable)
-  voltageFiltered1 = 0.5 * voltageFiltered1 + 0.5 * readVoltage;
+  voltageFiltered1 = 0.9 * voltageFiltered1 + 0.1 * readVoltage;
 
   // Set the tolerance value for voltage difference. If the measured voltage differs from the target by more than this value, adjustment is made.
   // A smaller tolerance results in finer control and more frequent adjustments.
@@ -848,7 +848,7 @@ void regulateOutputVoltageCH2() {
   float targetVoltage = globalOutV2;
 
   // Filtering: moving average style (0.9 weight = slow, stable)
-  voltageFiltered2 = 0.5 * voltageFiltered2 + 0.5 * readVoltage;
+  voltageFiltered2 = 0.9 * voltageFiltered2 + 0.1 * readVoltage;
 
   // Set the tolerance value for voltage difference. If the measured voltage differs from the target by more than this value, adjustment is made.
   // A smaller tolerance results in finer control and more frequent adjustments.
@@ -1107,3 +1107,9 @@ void drawWatt() {
     oldWatt2 = realWatt2; 
   }
 }
+
+
+
+
+
+
