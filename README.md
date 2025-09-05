@@ -102,9 +102,14 @@ For more stable voltage adjustments, especially when fine-tuning the output volt
 
 I keep improving my projects and sharing everything for free. I really appreciate any support — it helps me buy parts and tools to make even better projects. You can support me here: [Ko-fi](https://ko-fi.com/vohmaster)
 
+**Join my Discord server!**  
+Click the invite link below to connect:  
+[Discord Invite](https://discord.gg/2u2wJVqS)
+
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 
 
